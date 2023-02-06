@@ -8,4 +8,12 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="tic-tac.256x256.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="tic-tac.256x256.png" />
+  </ItemGroup>
+
 </Project>
