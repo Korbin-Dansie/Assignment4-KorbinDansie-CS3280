@@ -5,8 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tic_Tac_Toe"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="450" Icon="/tic-tac.256x256.png">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="13*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <ComboBox x:Name="cbPlayMode" HorizontalAlignment="Left" SelectedIndex="0" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+            <ComboBoxItem Content = "1 Player" />
+            <ComboBoxItem Content = "2 Players" />
+        </ComboBox>
+        <Grid x:Name="gScoreBoard" Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border x:Name="borderX" BorderBrush="Black"
+                BorderThickness="2" Margin="0,10,10,10">
+                <Grid x:Name="gX">
+                    <Label x:Name="lbX" Content="X" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <Label x:Name="lbXScore" Content="-" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                </Grid>
+            </Border>
+            <Border x:Name="borderO" BorderBrush="Black"
+                BorderThickness="2" Margin="0,10,10,10" Grid.Column="1">
+                <Grid x:Name="gO">
+                    <Label x:Name="lbO" Content="O" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <Label x:Name="lbOScore" Content="-" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
