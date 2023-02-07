@@ -8,10 +8,6 @@
         mc:Ignorable="d"
         Title="Tic Tac Toe" Height="450" Width="450" Icon="/tic-tac.256x256.png">
     <Window.Resources>
-        <Style x:Key="sytleScoreBoardButtons" TargetType="Button">
-            <Setter Property="Margin" Value="5,5,5,5"/>
-        </Style>
-
         <!-- Flat ComboBox https://gist.github.com/hansmaad/9187633-->
         <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="{DynamicResource twoDark}" />
         <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="{DynamicResource twoLight}" />
@@ -162,12 +158,6 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Red"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-
                         <Border x:Name="Border" Padding="2" SnapsToDevicePixels="true" Background="Transparent">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
@@ -205,6 +195,70 @@
         </Style>
         <!--End of Style ComboBoxItem-->
 
+        <!-- Look into this tomorrow http://mark-dot-net.blogspot.com/2007/07/creating-custom-wpf-button-template-in.html-->
+        <!--https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/walkthrough-create-a-button-by-using-xaml?view=netframeworkdesktop-4.8-->
+
+        <!--Style Scoreboard buttons-->
+        <Style x:Key="sytleScoreBoardButtons" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="5,5,5,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border x:Name="myBorder">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{DynamicResource mainDark}"/>
+                                </Border.Background>
+                            </Border>
+                            <ContentPresenter />
+                        </Grid>
+                        <!--<ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Border.Background" TargetName="myBorder">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{StaticResource mainDarkTwo}"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>-->
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- End of Style Scoreboard buttons-->
+
+        <!--Style Control buttons-->
+        <Style x:Key="styleControlsBtn" TargetType="{x:Type Button}">
+            <Setter Property="Foreground">
+                <Setter.Value>
+                    <SolidColorBrush Color="{DynamicResource colorWhite}"></SolidColorBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border x:Name="myBorder" SnapsToDevicePixels="true">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{DynamicResource twoLight}"/>
+                                </Border.Background>
+                            </Border>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,1,15,1"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Border.Background" TargetName="myBorder">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{DynamicResource twoMid}"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- End of Style Control buttons-->
     </Window.Resources>
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource mainColor}"/>
@@ -249,7 +303,7 @@
                 <Grid x:Name="gO">
                     <Label x:Name="lbO" Content="O" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18">
                         <Label.Foreground>
-                            <SolidColorBrush Color="{DynamicResource twoDark}"/>
+                            <SolidColorBrush Color="{DynamicResource circleBlue}"/>
                         </Label.Foreground>
                     </Label>
                     <Label x:Name="lbOScore" Content="-" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="18"/>
@@ -263,7 +317,7 @@
                 </Grid>
             </Border>
         </Grid>
-        <Grid Name="scoardBoardBackground" Grid.Row="3" Grid.Column="1" Margin="0,0,0,5">
+        <Grid Name="scoardBoardBackground" Grid.Row="3" Grid.Column="1">
             <Grid.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="Black" Offset="1"/>
@@ -282,73 +336,46 @@
                     <RowDefinition Height="4*"/>
                 </Grid.RowDefinitions>
                 <Button x:Name="btnTopLeft" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,0,5,5">
-                    <Button.Background>
-                        <SolidColorBrush Color="{DynamicResource mainDark}"/>
-                    </Button.Background>
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
                 <Button x:Name="btnTopMid" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,0,5,5">
-                    <Button.Background>
-                        <SolidColorBrush Color="{DynamicResource mainDark}"/>
-                    </Button.Background>
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
-                <Button x:Name="btnTopRight"  Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,0,0,5">
-                    <Button.Background>
-                        <SolidColorBrush Color="{DynamicResource mainDark}"/>
-                    </Button.Background>
+                <Button x:Name="btnTopRight"  Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,0,0,5" MouseEnter="btnTopRight_MouseEnter">
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
                 <Button x:Name="btnMidLeft"  Grid.Row="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,5,5,5">
-                    <Button.Background>
-                        <SolidColorBrush Color="{DynamicResource mainDark}"/>
-                    </Button.Background>
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
                 <Button x:Name="btnMidMid"  Grid.Row="1" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}">
-                    <Button.Background>
-                        <SolidColorBrush Color="{DynamicResource mainDark}"/>
-                    </Button.Background>
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
                 <Button x:Name="btnMidRight"  Grid.Row="1" Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,0,5">
-                    <Button.Background>
-                        <SolidColorBrush Color="{DynamicResource mainDark}"/>
-                    </Button.Background>
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
                 <Button x:Name="btnBotLeft"  Grid.Row="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,5,5,0">
-                    <Button.Background>
-                        <SolidColorBrush Color="{DynamicResource mainDark}"/>
-                    </Button.Background>
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
                 <Button x:Name="btnBotMid"  Grid.Row="2" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,5,0">
-                    <Button.Background>
-                        <SolidColorBrush Color="{DynamicResource mainDark}"/>
-                    </Button.Background>
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
                 <Button x:Name="btnBotRight"  Grid.Row="2" Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,0,0">
-                    <Button.Background>
-                        <SolidColorBrush Color="{DynamicResource mainDark}"/>
-                    </Button.Background>
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
@@ -361,22 +388,12 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnClearBoard" Content="Clear Board" VerticalAlignment="Center" RenderTransformOrigin="0.265,0.152" Margin="0,0,10,0" Padding="25,1,25,1" FontSize="18" HorizontalAlignment="Right">
-                <Button.Foreground>
-                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
-                </Button.Foreground>
-                <Button.Background>
-                    <SolidColorBrush Color="{DynamicResource twoLight}"/>
-                </Button.Background>
+            <Button x:Name="btnClearBoard" Content="Clear Board" VerticalAlignment="Center" RenderTransformOrigin="0.265,0.152" Margin="0,0,10,0" Padding="25,1,25,1" FontSize="18" HorizontalAlignment="Right" Style="{Binding Mode=OneWay, Source={StaticResource styleControlsBtn}}">
             </Button>
-            <Button x:Name="btnRestart" Grid.Column="1" Content="Restart" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="25,1,25,1" Margin="10,0,0,0" Width="{Binding ActualWidth, ElementName=btnClearBoard, Mode=OneWay}" FontSize="18">
-                <Button.Background>
-                    <SolidColorBrush Color="{DynamicResource twoLight}"/>
-                </Button.Background>
-                <Button.Foreground>
-                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
-                </Button.Foreground>
+            <Button x:Name="btnRestart" Grid.Column="1" Content="Restart" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="25,1,25,1" Margin="10,0,0,0" Width="{Binding ActualWidth, ElementName=btnClearBoard, Mode=OneWay}" FontSize="18" Style="{Binding Mode=OneWay, Source={StaticResource styleControlsBtn}}">
+
             </Button>
         </Grid>
+        <Button x:Name="btnStartgame" Grid.Column="1" Content="Start Game" HorizontalAlignment="Center" Style="{Binding Mode=OneWay, Source={StaticResource styleControlsBtn}}" Grid.Row="1" FontSize="18"/>
     </Grid>
 </Window>
