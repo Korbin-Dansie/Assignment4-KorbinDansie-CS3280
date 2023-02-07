@@ -11,7 +11,7 @@
         <Color x:Key="mainDarkTwo">#FFBF3D</Color>
         <Color x:Key="twoDark">#003049</Color>
         <Color x:Key="twoLight">#669BBC</Color>
-
+        <Color x:Key="twoMid">#4C88AD</Color>
 
         <Color x:Key="colorWhite">#FFFFFF</Color>
 

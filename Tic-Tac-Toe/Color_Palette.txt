@@ -1,0 +1,11 @@
+﻿780000 - Dark Red
+
+C1121F - Red
+
+FDF0D5 - Bage
+
+003049 - DarkBlue
+
+4C88AD - MidBlue
+
+669BBC - LightBlue
