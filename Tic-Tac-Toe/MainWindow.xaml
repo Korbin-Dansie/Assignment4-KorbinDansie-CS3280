@@ -201,18 +201,20 @@
         <!--Style Scoreboard buttons-->
         <Style x:Key="sytleScoreBoardButtons" TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="5,5,5,5"/>
+            <Setter Property="MinHeight" Value="23" />
+            <Setter Property="MinWidth" Value="75" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
-                            <Border x:Name="myBorder">
-                                <Border.Background>
-                                    <SolidColorBrush Color="{DynamicResource mainDark}"/>
-                                </Border.Background>
-                            </Border>
-                            <ContentPresenter />
-                        </Grid>
-                        <!--<ControlTemplate.Triggers>
+                        <Border x:Name="myBorder" TextBlock.Foreground="{TemplateBinding Foreground}">
+                            <Border.Background>
+                                <SolidColorBrush Color="{DynamicResource mainDark}"/>
+                            </Border.Background>
+                            <ContentPresenter HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Border.Background" TargetName="myBorder">
                                     <Setter.Value>
@@ -220,7 +222,7 @@
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
-                        </ControlTemplate.Triggers>-->
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -335,47 +337,47 @@
                     <RowDefinition Height="4*"/>
                     <RowDefinition Height="4*"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="btnTopLeft" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,0,5,5">
+                <Button x:Name="btnTopLeft" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,0,5,5" Click="PlayerMoveClick">
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
-                <Button x:Name="btnTopMid" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,0,5,5">
+                <Button x:Name="btnTopMid" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,0,5,5" Click="PlayerMoveClick">
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
-                <Button x:Name="btnTopRight"  Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,0,0,5" MouseEnter="btnTopRight_MouseEnter">
+                <Button x:Name="btnTopRight"  Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,0,0,5" Click="PlayerMoveClick">
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
-                <Button x:Name="btnMidLeft"  Grid.Row="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,5,5,5">
+                <Button x:Name="btnMidLeft"  Grid.Row="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,5,5,5" Click="PlayerMoveClick">
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
-                <Button x:Name="btnMidMid"  Grid.Row="1" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}">
+                <Button x:Name="btnMidMid"  Grid.Row="1" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Click="PlayerMoveClick">
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
-                <Button x:Name="btnMidRight"  Grid.Row="1" Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,0,5">
+                <Button x:Name="btnMidRight"  Grid.Row="1" Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,0,5" Click="PlayerMoveClick">
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
-                <Button x:Name="btnBotLeft"  Grid.Row="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,5,5,0">
+                <Button x:Name="btnBotLeft"  Grid.Row="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,5,5,0" Click="PlayerMoveClick">
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
-                <Button x:Name="btnBotMid"  Grid.Row="2" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,5,0">
+                <Button x:Name="btnBotMid"  Grid.Row="2" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,5,0" Click="PlayerMoveClick">
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
                 </Button>
-                <Button x:Name="btnBotRight"  Grid.Row="2" Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,0,0">
+                <Button x:Name="btnBotRight"  Grid.Row="2" Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,0,0" Click="PlayerMoveClick">
                     <Viewbox>
                         <Label Content="X" Padding="10,10,10,10" FontSize="72"/>
                     </Viewbox>
