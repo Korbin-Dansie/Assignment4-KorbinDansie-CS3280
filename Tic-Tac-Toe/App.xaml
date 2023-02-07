@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:Tic_Tac_Toe"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Color x:Key="oneDark">#780000</Color>
+        <Color x:Key="oneLight">#C1121F</Color>
+        <Color x:Key="mainColor">#FDF0D5</Color>
+        <Color x:Key="mainDark">#FFDE9B</Color>
+        <Color x:Key="mainDarkTwo">#FFBF3D</Color>
+        <Color x:Key="twoDark">#003049</Color>
+        <Color x:Key="twoLight">#669BBC</Color>
     </Application.Resources>
 </Application>
