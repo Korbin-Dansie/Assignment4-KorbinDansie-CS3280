@@ -12,7 +12,10 @@
         <Color x:Key="twoDark">#003049</Color>
         <Color x:Key="twoLight">#669BBC</Color>
         <Color x:Key="twoMid">#4C88AD</Color>
+        <Color x:Key="circleBlue">#FF1BB1E4</Color>
 
+
+        
         <Color x:Key="colorWhite">#FFFFFF</Color>
 
     </Application.Resources>
