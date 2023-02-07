@@ -171,14 +171,6 @@
                         <Border x:Name="Border" Padding="2" SnapsToDevicePixels="true" Background="Transparent">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
-                                    <!--<VisualState x:Name="Unselected">
-                                        <Storyboard>
-                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                                <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource twoLight}" />
-                                            </ColorAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>-->
                                     <VisualState x:Name="Normal">
                                         <Storyboard>
                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
