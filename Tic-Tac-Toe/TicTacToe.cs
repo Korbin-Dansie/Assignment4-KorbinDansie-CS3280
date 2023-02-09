@@ -56,6 +56,16 @@ namespace Tic_Tac_Toe
             return iTies;
         }
 
+        /// <summary>
+        /// Checks to see if the game is over
+        /// </summary>
+        /// <returns></returns>
+        public bool isgameOver()
+        {
+            hasWon();
+            IsTie();
+            return gameOver;
+        }
         #endregion GettersAndSetter
 
         #region Constructor
@@ -177,7 +187,6 @@ namespace Tic_Tac_Toe
         /// <returns></returns>
         public bool IsTie()
         {
-
             // If every row is filled return true
             for (int row = 0; row < ROW_NUMBER; row++)
             {

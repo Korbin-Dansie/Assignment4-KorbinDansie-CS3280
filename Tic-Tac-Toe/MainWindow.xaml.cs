@@ -42,14 +42,42 @@ namespace Tic_Tac_Toe
             // set game state to start
             bool hasGameStarted = true;
 
-            // Set active turn to green
-            Color color = (Color)this.FindResource("twoMid");
-            Brush brush = new SolidColorBrush(color);
-            borderX.BorderBrush = brush;
+            // reset borders
+            setActivePlayerBorder();
 
             // reset colors
 
             // reset labels
+        }
+
+        /// <summary>
+        /// Updates the border depending on whos turn it is
+        /// or if the game is over
+        /// </summary>
+        private void setActivePlayerBorder()
+        {
+            resetPlayerBorders();
+            if (ticTacToe.isgameOver())
+            {
+                return;
+            }
+
+            if (ticTacToe.turnCounter == false)
+            {
+                // Show x is active player
+                Color color = (Color)this.FindResource("oneLight");
+                Brush brush = new SolidColorBrush(color);
+                borderX.BorderBrush = brush;
+
+            }
+            else if(ticTacToe.turnCounter == true)
+            {
+                // Show o is active player
+                Color color = (Color)this.FindResource("circleBlue"); 
+                Brush brush = new SolidColorBrush(color);
+                borderO.BorderBrush = brush;
+            }
+
         }
 
         /// <summary>
@@ -74,6 +102,16 @@ namespace Tic_Tac_Toe
         private void resetColors()
         {
 
+        }
+
+        /// <summary>
+        /// Reset the active player borders to black
+        /// </summary>
+        private void resetPlayerBorders()
+        {
+            Brush brush = new SolidColorBrush(Colors.Black);
+            borderX.BorderBrush = brush;
+            borderO.BorderBrush = brush;
         }
 
         /// <summary>
@@ -162,9 +200,8 @@ namespace Tic_Tac_Toe
             // If won or tie update scoareboard
 
             // If won or tie set game started to false
-
             ticTacToe.changeTurns();
-
+            setActivePlayerBorder();
         }
 
         /// <summary>
