@@ -63,7 +63,7 @@ namespace Tic_Tac_Toe
         /// <returns></returns>
         private bool horizontalWin()
         {
-            for(int i = 0; i < ROW_NUMBER; i++)
+            for (int i = 0; i < ROW_NUMBER; i++)
             {
                 ;
             }
@@ -118,7 +118,8 @@ namespace Tic_Tac_Toe
         public bool setAtSquare(int index)
         {
             // Check if square is filled
-            if(getsaBoardbyIndex(index) != null || getsaBoardbyIndex(index) != String.Empty)
+            string indexString = getsaBoardbyIndex(index);
+            if (!(indexString == null || indexString == String.Empty))
             {
                 return false;
             }
@@ -174,6 +175,10 @@ namespace Tic_Tac_Toe
                 }
             }
 
+            iPlayer1Wins = 0;
+            iPlayer2Wins = 0;
+            iTies = 0;
+            turnCounter = false;
         }
 
 

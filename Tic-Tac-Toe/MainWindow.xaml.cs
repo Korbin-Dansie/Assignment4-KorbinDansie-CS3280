@@ -45,6 +45,19 @@ namespace Tic_Tac_Toe
         }
 
         /// <summary>
+        /// Reset the game and the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnRestart_Click(object sender, RoutedEventArgs e)
+        {
+            ticTacToe.restartGame();
+
+            resetColors();
+            loadBoard();
+        }
+
+        /// <summary>
         /// If any background colors have changed reset them
         /// </summary>
         private void resetColors()
@@ -92,6 +105,9 @@ namespace Tic_Tac_Toe
             // Else fill in the square
             else {
                 btn.Content = ticTacToe.getAtSquare(index);
+                Brush brush = new SolidColorBrush(Colors.White);
+                //btn.Style.Setters.Add(new Setter(Control.ForegroundProperty, brush));
+                btn.Foreground = brush;
             }
 
             // Is winning move
