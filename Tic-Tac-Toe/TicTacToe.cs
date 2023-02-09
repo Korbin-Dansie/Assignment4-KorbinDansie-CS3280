@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tic_Tac_Toe
 {
@@ -11,17 +7,20 @@ namespace Tic_Tac_Toe
         #region Attributes
         private const byte ROW_NUMBER = 3;
         private const byte COLUMN_NUMBER = 3;
+        private bool gameOver = false;
 
         /// <summary>
         /// Who's turn is it. False = X, True = O
         /// </summary>
-        private bool turnCounter { get; set; }
+        public bool turnCounter { get; set; }
 
         private string[,] saBoard;
+
         private int saBoardIndex
         {
             get { return saBoard.Length; }
         }
+
         private int iPlayer1Wins;
         private int iPlayer2Wins;
         private int iTies;
@@ -41,6 +40,23 @@ namespace Tic_Tac_Toe
 
         #endregion Attributes
 
+        #region GettersAndSetter
+        public int getiPlayer1Wins()
+        {
+            return iPlayer1Wins;
+        }
+
+        public int getiPlayer2Wins()
+        {
+            return iPlayer2Wins;
+        }
+
+        public int getiTies()
+        {
+            return iTies;
+        }
+
+        #endregion GettersAndSetter
 
         #region Constructor
         public TicTacToe()
@@ -52,9 +68,28 @@ namespace Tic_Tac_Toe
         #endregion Constructor
 
         #region Methods
-        public bool IsWinningMove()
+        /// <summary>
+        /// Return if somebody has won the game yet
+        /// If so update who scores
+        /// </summary>
+        /// <returns></returns>
+        public bool hasWon()
         {
-            return false;
+            bool won =  horizontalWin() || verticalWin() || diagonalWin();
+            if (won && !gameOver)
+            {
+                gameOver = true;
+                switch (turnCounter)
+                {
+                    case false: //xs' turn
+                        iPlayer1Wins++;
+                        break;
+                    case true: // o's turn
+                        iPlayer2Wins++;
+                        break;
+                }
+            }
+            return won;
         }
 
         /// <summary>
@@ -63,9 +98,26 @@ namespace Tic_Tac_Toe
         /// <returns></returns>
         private bool horizontalWin()
         {
-            for (int i = 0; i < ROW_NUMBER; i++)
+            string startingChar;
+            string nextChar;
+            for (int row = 0; row < ROW_NUMBER; row++)
             {
-                ;
+                startingChar = saBoard[row, 0];
+                // If every column in the row is the same return true
+                for (int col = 1; col < COLUMN_NUMBER; col++)
+                {
+                    nextChar = saBoard[row, col];
+                    if(nextChar != startingChar)
+                    {
+                        break;
+                    }
+
+                    // If we reached the end of the row and all strings are the same then somebody won
+                    if(col + 1 == COLUMN_NUMBER && !(startingChar == null || startingChar == String.Empty))
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }
@@ -76,6 +128,27 @@ namespace Tic_Tac_Toe
         /// <returns></returns>
         private bool verticalWin()
         {
+            string startingChar;
+            string nextChar;
+            for (int col = 0; col < COLUMN_NUMBER; col++)
+            {
+                startingChar = saBoard[0, col];
+                // If every column in the row is the same return true
+                for (int row = 1; row < ROW_NUMBER; row++)
+                {
+                    nextChar = saBoard[row, col];
+                    if (nextChar != startingChar)
+                    {
+                        break;
+                    }
+
+                    // If we reached the end of the row and all strings are the same then somebody won
+                    if (row + 1 == ROW_NUMBER && !(startingChar == null || startingChar == String.Empty))
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
@@ -85,6 +158,16 @@ namespace Tic_Tac_Toe
         /// <returns></returns>
         private bool diagonalWin()
         {
+
+            if (saBoard[0,0] == saBoard[1, 1] && saBoard[1, 1] == saBoard[2, 2] && !(saBoard[1, 1] == null || saBoard[1, 1] == String.Empty))
+            {
+                return true;
+            }
+            else if (saBoard[2, 0] == saBoard[1, 1] && saBoard[1, 1] == saBoard[0, 2] && !(saBoard[1, 1] == null || saBoard[1, 1] == String.Empty))
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -94,7 +177,22 @@ namespace Tic_Tac_Toe
         /// <returns></returns>
         public bool IsTie()
         {
-            return false;
+
+            // If every row is filled return true
+            for (int row = 0; row < ROW_NUMBER; row++)
+            {
+                for (int col = 0; col < COLUMN_NUMBER; col++)
+                {
+                    if(saBoard[row,col] == null || saBoard[row, col] == String.Empty)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            gameOver = true;
+            iTies++;
+            return true;
         }
 
         /// <summary>
@@ -111,12 +209,16 @@ namespace Tic_Tac_Toe
 
         /// <summary>
         /// Set X or O to a game board square if valid
-        /// then change who's turn it is
         /// </summary>
         /// <param name="index"></param>
         /// <returns>If move is value True</returns>
         public bool setAtSquare(int index)
         {
+            // Make sure the game is not over
+            if (gameOver)
+            {
+                return false;
+            }
             // Check if square is filled
             string indexString = getsaBoardbyIndex(index);
             if (!(indexString == null || indexString == String.Empty))
@@ -133,10 +235,15 @@ namespace Tic_Tac_Toe
             {
                 setsaBoardbyIndex(index, "O");
             }
-
-            // Switch whos turn
-            turnCounter = !turnCounter;
             return true;
+        }
+
+        /// <summary>
+        /// Change who's turn it is
+        /// </summary>
+        public void changeTurns()
+        {
+            turnCounter = !turnCounter;
         }
 
         /// <summary>
@@ -179,11 +286,9 @@ namespace Tic_Tac_Toe
             iPlayer2Wins = 0;
             iTies = 0;
             turnCounter = false;
+            gameOver = false;
         }
-
-
         #endregion Methods
-
 
     }
 }

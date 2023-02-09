@@ -40,7 +40,15 @@ namespace Tic_Tac_Toe
         private void btnStartgame_Click(object sender, RoutedEventArgs e)
         {
             // set game state to start
+            bool hasGameStarted = true;
+
+            // Set active turn to green
+            Color color = (Color)this.FindResource("twoMid");
+            Brush brush = new SolidColorBrush(color);
+            borderX.BorderBrush = brush;
+
             // reset colors
+
             // reset labels
         }
 
@@ -55,6 +63,9 @@ namespace Tic_Tac_Toe
 
             resetColors();
             loadBoard();
+            lbXScore.Content = "-";
+            lbOScore.Content = "-";
+            lbTieScore.Content = "-";
         }
 
         /// <summary>
@@ -93,32 +104,66 @@ namespace Tic_Tac_Toe
             }
 
             String gameSquare = ticTacToe.getAtSquare(index);
+
+            // Set the square and 
             bool validMove = ticTacToe.setAtSquare(index);
 
             // If games has not started do nothing
 
             // If space is already filled with an x or o do nothing
-            if(validMove == false)
+            if (validMove == false)
             {
                 return;
             }
             // Else fill in the square
-            else {
-                btn.Content = ticTacToe.getAtSquare(index);
-                Brush brush = new SolidColorBrush(Colors.White);
-                //btn.Style.Setters.Add(new Setter(Control.ForegroundProperty, brush));
-                btn.Foreground = brush;
+            else
+            {
+                string inputString = ticTacToe.getAtSquare(index);
+
+                btn.Content = inputString;
+
+                if (inputString.ToLower() == "x")
+                {
+                    Color color = (Color)this.FindResource("oneLight");
+                    Brush brush = new SolidColorBrush(color);
+                    btn.Foreground = brush;
+                }
+                else
+                {
+                    Color color = (Color)this.FindResource("circleBlue");
+                    Brush brush = new SolidColorBrush(color);
+                    btn.Foreground = brush;
+                }
+
             }
 
             // Is winning move
+            if (ticTacToe.hasWon())
+            {
+                switch (ticTacToe.turnCounter)
+                {
+                    case false: //xs' turn
+                        lbXScore.Content = ticTacToe.getiPlayer1Wins();
+                        break;
+                    case true: // o's turn
+                        lbOScore.Content = ticTacToe.getiPlayer2Wins();
+                        break;
 
+                }
+            }
             // Highlight winning move
 
             // Is tie
+            if (ticTacToe.IsTie())
+            {
+                lbTieScore.Content = ticTacToe.getiTies();
+            }
 
             // If won or tie update scoareboard
 
             // If won or tie set game started to false
+
+            ticTacToe.changeTurns();
 
         }
 
@@ -128,7 +173,7 @@ namespace Tic_Tac_Toe
         private void loadBoard()
         {
             int index = 0;
-            foreach(Button btn in gBoard.Children)
+            foreach (Button btn in gBoard.Children)
             {
                 btn.Content = ticTacToe.getAtSquare(index);
             }

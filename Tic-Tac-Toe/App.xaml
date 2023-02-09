@@ -14,9 +14,9 @@
         <Color x:Key="twoMid">#4C88AD</Color>
         <Color x:Key="circleBlue">#FF1BB1E4</Color>
 
-
-        
         <Color x:Key="colorWhite">#FFFFFF</Color>
+
+        <Color x:Key="activePlayer">#B8CCB8</Color>
 
     </Application.Resources>
 </Application>
