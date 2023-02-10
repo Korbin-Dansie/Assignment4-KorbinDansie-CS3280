@@ -49,6 +49,7 @@ namespace Tic_Tac_Toe
             // reset colors
 
             // reset labels
+            resetLabels();
             resetHighlightWinningMove();
 
             // Reset the board
@@ -95,6 +96,7 @@ namespace Tic_Tac_Toe
             ticTacToe.restartGame();
 
             resetPlayerBorders();
+            resetLabels();
             resetHighlightWinningMove();
             resetColors();
             loadBoard();
@@ -142,7 +144,10 @@ namespace Tic_Tac_Toe
         /// </summary>
         private void resetLabels()
         {
-
+            lbPlayer1Wins.Visibility = Visibility.Hidden;
+            lbPlayer2Wins.Visibility = Visibility.Hidden;
+            lbClickStartToBegin.Visibility = Visibility.Hidden;
+            lbItsATie.Visibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -154,7 +159,13 @@ namespace Tic_Tac_Toe
         {
             if(hasGameStarted == false)
             {
+                resetLabels();
+                lbClickStartToBegin.Visibility = Visibility.Visible;
                 return;
+            }
+            else
+            {
+                lbClickStartToBegin.Visibility = Visibility.Hidden;
             }
 
             Button btn = (Button)sender;
@@ -210,9 +221,12 @@ namespace Tic_Tac_Toe
                 {
                     case false: //xs' turn
                         lbXScore.Content = ticTacToe.getiPlayer1Wins();
+                        lbPlayer1Wins.Visibility = Visibility.Visible;
+
                         break;
                     case true: // o's turn
                         lbOScore.Content = ticTacToe.getiPlayer2Wins();
+                        lbPlayer2Wins.Visibility = Visibility.Visible;
                         break;
                 }
 
@@ -225,6 +239,7 @@ namespace Tic_Tac_Toe
             if (ticTacToe.IsTie())
             {
                 lbTieScore.Content = ticTacToe.getiTies();
+                lbItsATie.Visibility = Visibility.Visible;
             }
 
             // If won or tie update scoareboard
@@ -288,7 +303,6 @@ namespace Tic_Tac_Toe
                     pDia2.Visibility = Visibility.Visible;
                     pDia2.Stroke = new SolidColorBrush(color);
                     break;
-
             }
         }
 

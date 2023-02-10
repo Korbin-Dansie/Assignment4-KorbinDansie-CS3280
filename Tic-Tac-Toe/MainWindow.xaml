@@ -440,14 +440,21 @@
         </Grid>
         <Grid x:Name="GameStatus" Grid.Row="3" Grid.Column="1">
             <Viewbox>
-                <Label x:Name="lbPlayer1Wins" Content="Player 1 Wins" Background="#BFFFFFFF" Margin="15,0,15,0">
+                <Label x:Name="lbPlayer1Wins" Content="Player 1 Wins" Background="#BFFFFFFF" Margin="15,0,15,0" Visibility="Hidden">
                     <Label.Foreground>
                         <SolidColorBrush Color="Black"/>
                     </Label.Foreground>
                 </Label>
             </Viewbox>
             <Viewbox>
-                <Label x:Name="lbPlayer2Wins" Content="Player 2 Wins" Background="#BFFFFFFF" Margin="15,0,15,0">
+                <Label x:Name="lbPlayer2Wins" Content="Player 2 Wins" Background="#BFFFFFFF" Margin="15,0,15,0" Visibility="Hidden">
+                    <Label.Foreground>
+                        <SolidColorBrush Color="Black"/>
+                    </Label.Foreground>
+                </Label>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="lbItsATie" Content="Its a Tie" Background="#BFFFFFFF" Margin="15,0,15,0" Visibility="Hidden">
                     <Label.Foreground>
                         <SolidColorBrush Color="Black"/>
                     </Label.Foreground>
