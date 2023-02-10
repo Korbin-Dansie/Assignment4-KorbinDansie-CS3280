@@ -7,6 +7,7 @@ namespace Tic_Tac_Toe
         #region Attributes
         private const byte ROW_NUMBER = 3;
         private const byte COLUMN_NUMBER = 3;
+        public bool hasGameStarted { get; set; } = false;
         private bool gameOver = false;
 
         /// <summary>
@@ -89,7 +90,6 @@ namespace Tic_Tac_Toe
         {
             saBoard = new string[ROW_NUMBER, COLUMN_NUMBER];
             turnCounter = false;
-
         }
         #endregion Constructor
 
@@ -101,18 +101,20 @@ namespace Tic_Tac_Toe
         /// <returns></returns>
         public bool hasWon()
         {
-            bool won =  horizontalWin() || verticalWin() || diagonalWin();
+            String winingCharacter;
+            bool won =  horizontalWin(out winingCharacter) || verticalWin(out winingCharacter) || diagonalWin(out winingCharacter);
             if (won && !gameOver)
             {
                 gameOver = true;
-                switch (turnCounter)
+                if(winingCharacter == "X")
                 {
-                    case false: //xs' turn
-                        iPlayer1Wins++;
-                        break;
-                    case true: // o's turn
-                        iPlayer2Wins++;
-                        break;
+                    iPlayer1Wins++;
+
+                }
+                else
+                {
+                    iPlayer2Wins++;
+
                 }
             }
             return won;
@@ -122,7 +124,7 @@ namespace Tic_Tac_Toe
         /// Checks if the game has been one with a row
         /// </summary>
         /// <returns></returns>
-        private bool horizontalWin()
+        private bool horizontalWin(out String winingCharacter)
         {
             string startingChar;
             string nextChar;
@@ -142,10 +144,12 @@ namespace Tic_Tac_Toe
                     if(col + 1 == COLUMN_NUMBER && !(startingChar == null || startingChar == String.Empty))
                     {
                         eWiningMove = (WinningMove)row + 1;
+                        winingCharacter = saBoard[row, 0];
                         return true;
                     }
                 }
             }
+            winingCharacter = String.Empty;
             return false;
         }
 
@@ -153,7 +157,7 @@ namespace Tic_Tac_Toe
         /// Checks if the game has been won with a column
         /// </summary>
         /// <returns></returns>
-        private bool verticalWin()
+        private bool verticalWin(out String winingCharacter)
         {
             string startingChar;
             string nextChar;
@@ -173,10 +177,12 @@ namespace Tic_Tac_Toe
                     if (row + 1 == ROW_NUMBER && !(startingChar == null || startingChar == String.Empty))
                     {
                         eWiningMove = (WinningMove)col + 4;
+                        winingCharacter = saBoard[0, col];
                         return true;
                     }
                 }
             }
+            winingCharacter = String.Empty;
             return false;
         }
 
@@ -184,20 +190,23 @@ namespace Tic_Tac_Toe
         /// Checks if the game has been won with a diagonal
         /// </summary>
         /// <returns></returns>
-        private bool diagonalWin()
+        private bool diagonalWin(out String winingCharacter)
         {
 
             if (saBoard[0,0] == saBoard[1, 1] && saBoard[1, 1] == saBoard[2, 2] && !(saBoard[1, 1] == null || saBoard[1, 1] == String.Empty))
             {
+                winingCharacter = saBoard[1, 1];
                 eWiningMove = WinningMove.Diag1;
                 return true;
             }
             else if (saBoard[2, 0] == saBoard[1, 1] && saBoard[1, 1] == saBoard[0, 2] && !(saBoard[1, 1] == null || saBoard[1, 1] == String.Empty))
             {
+                winingCharacter = saBoard[1, 1];
                 eWiningMove = WinningMove.Diag2;
                 return true;
             }
 
+            winingCharacter = String.Empty;
             return false;
         }
 
@@ -250,7 +259,7 @@ namespace Tic_Tac_Toe
         /// <returns>If move is value True</returns>
         public bool setAtSquare(int index)
         {
-            // Make sure the game is not over
+            // Make sure the game is not over, or game has not started
             if (gameOver)
             {
                 return false;
@@ -271,6 +280,7 @@ namespace Tic_Tac_Toe
             {
                 setsaBoardbyIndex(index, "O");
             }
+            changeTurns();
             return true;
         }
 
@@ -323,6 +333,7 @@ namespace Tic_Tac_Toe
             iPlayer2Wins = 0;
             iTies = 0;
             turnCounter = false;
+            hasGameStarted = false;
             gameOver = false;
         }
 
@@ -342,6 +353,7 @@ namespace Tic_Tac_Toe
             eWiningMove = WinningMove.None;
             turnCounter = false;
             gameOver = false;
+            hasGameStarted = true;
         }
 
 

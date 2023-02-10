@@ -21,9 +21,6 @@ namespace Tic_Tac_Toe
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        bool hasGameStarted = false;
-
         TicTacToe ticTacToe;
 
         public MainWindow()
@@ -40,7 +37,6 @@ namespace Tic_Tac_Toe
         private void btnStartgame_Click(object sender, RoutedEventArgs e)
         {
             // set game state to start
-            hasGameStarted = true;
             ticTacToe.clearBoard();
 
             // reset borders
@@ -101,7 +97,8 @@ namespace Tic_Tac_Toe
             resetColors();
             loadBoard();
 
-            hasGameStarted = false;  
+            lbClickStartToBegin.Visibility = Visibility.Visible;
+
             lbXScore.Content = "-";
             lbOScore.Content = "-";
             lbTieScore.Content = "-";
@@ -146,8 +143,10 @@ namespace Tic_Tac_Toe
         {
             lbPlayer1Wins.Visibility = Visibility.Hidden;
             lbPlayer2Wins.Visibility = Visibility.Hidden;
-            lbClickStartToBegin.Visibility = Visibility.Hidden;
             lbItsATie.Visibility = Visibility.Hidden;
+
+            lbClickStartToBegin.Visibility = Visibility.Hidden;
+
         }
 
         /// <summary>
@@ -157,16 +156,14 @@ namespace Tic_Tac_Toe
         /// <param name="e"></param>
         private void PlayerMoveClick(object sender, RoutedEventArgs e)
         {
-            if(hasGameStarted == false)
+            // If the game has not stared do noting and tell user to click start
+            if(!ticTacToe.hasGameStarted)
             {
                 resetLabels();
                 lbClickStartToBegin.Visibility = Visibility.Visible;
                 return;
             }
-            else
-            {
-                lbClickStartToBegin.Visibility = Visibility.Hidden;
-            }
+
 
             Button btn = (Button)sender;
             int index;
@@ -183,6 +180,7 @@ namespace Tic_Tac_Toe
             String gameSquare = ticTacToe.getAtSquare(index);
 
             // Set the square and 
+            bool currentPlayerTurn = ticTacToe.turnCounter;
             bool validMove = ticTacToe.setAtSquare(index);
 
             // If games has not started do nothing
@@ -217,7 +215,7 @@ namespace Tic_Tac_Toe
             // Is winning move
             if (ticTacToe.hasWon())
             {
-                switch (ticTacToe.turnCounter)
+                switch (currentPlayerTurn)
                 {
                     case false: //xs' turn
                         lbXScore.Content = ticTacToe.getiPlayer1Wins();
@@ -231,7 +229,7 @@ namespace Tic_Tac_Toe
                 }
 
                 // Hightlight wining move
-                hightlightWinningMove();
+                hightlightWinningMove(currentPlayerTurn);
 
             }
 
@@ -245,25 +243,25 @@ namespace Tic_Tac_Toe
             // If won or tie update scoareboard
 
             // If won or tie set game started to false
-            ticTacToe.changeTurns();
             setActivePlayerBorder();
         }
 
         /// <summary>
         /// Show a line connecting the winning squares
+        /// <para>Takes whos turn it is</para>
         /// </summary>
-        private void hightlightWinningMove()
+        private void hightlightWinningMove(bool currentPlayerTurn)
         {
             Color color;
 
             // Set the winning colors to the line color 
-            if (ticTacToe.turnCounter == false)
+            if (!currentPlayerTurn)
             {
                 // Show x is active player
                 color = (Color)this.FindResource("oneLight");
 
             }
-            else if (ticTacToe.turnCounter == true)
+            else
             {
                 // Show o is active player
                 color = (Color)this.FindResource("circleBlue");
