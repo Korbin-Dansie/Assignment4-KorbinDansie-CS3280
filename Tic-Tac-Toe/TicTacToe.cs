@@ -28,6 +28,7 @@ namespace Tic_Tac_Toe
         private WinningMove eWiningMove;
         private enum WinningMove
         {
+            None,
             Row1,
             Row2,
             Row3,
@@ -57,6 +58,20 @@ namespace Tic_Tac_Toe
         }
 
         /// <summary>
+        /// Return which match won
+        /// None    0,
+        /// Rows    1-3,
+        /// Col     4-6,
+        /// Dia     7 = \,
+        /// Dia     8 = /,
+        /// </summary>
+        /// <returns></returns>
+        public int whichSquareWon()
+        {
+            return (int)eWiningMove;
+        }
+
+        /// <summary>
         /// Checks to see if the game is over
         /// </summary>
         /// <returns></returns>
@@ -66,6 +81,7 @@ namespace Tic_Tac_Toe
             IsTie();
             return gameOver;
         }
+
         #endregion GettersAndSetter
 
         #region Constructor
@@ -125,6 +141,7 @@ namespace Tic_Tac_Toe
                     // If we reached the end of the row and all strings are the same then somebody won
                     if(col + 1 == COLUMN_NUMBER && !(startingChar == null || startingChar == String.Empty))
                     {
+                        eWiningMove = (WinningMove)row + 1;
                         return true;
                     }
                 }
@@ -155,6 +172,7 @@ namespace Tic_Tac_Toe
                     // If we reached the end of the row and all strings are the same then somebody won
                     if (row + 1 == ROW_NUMBER && !(startingChar == null || startingChar == String.Empty))
                     {
+                        eWiningMove = (WinningMove)col + 4;
                         return true;
                     }
                 }
@@ -171,10 +189,12 @@ namespace Tic_Tac_Toe
 
             if (saBoard[0,0] == saBoard[1, 1] && saBoard[1, 1] == saBoard[2, 2] && !(saBoard[1, 1] == null || saBoard[1, 1] == String.Empty))
             {
+                eWiningMove = WinningMove.Diag1;
                 return true;
             }
             else if (saBoard[2, 0] == saBoard[1, 1] && saBoard[1, 1] == saBoard[0, 2] && !(saBoard[1, 1] == null || saBoard[1, 1] == String.Empty))
             {
+                eWiningMove = WinningMove.Diag2;
                 return true;
             }
 
@@ -187,6 +207,11 @@ namespace Tic_Tac_Toe
         /// <returns></returns>
         public bool IsTie()
         {
+            // If somebody has won return false
+            if (hasWon())
+            {
+                return false;
+            }
             // If every row is filled return true
             for (int row = 0; row < ROW_NUMBER; row++)
             {
@@ -199,10 +224,12 @@ namespace Tic_Tac_Toe
                 }
             }
 
+            eWiningMove = WinningMove.None;
             gameOver = true;
             iTies++;
             return true;
         }
+
 
         /// <summary>
         /// Returns the string at a given index
@@ -291,12 +318,34 @@ namespace Tic_Tac_Toe
                 }
             }
 
+            eWiningMove = WinningMove.None;
             iPlayer1Wins = 0;
             iPlayer2Wins = 0;
             iTies = 0;
             turnCounter = false;
             gameOver = false;
         }
+
+        /// <summary>
+        /// Clear the board and get ready for a new game
+        /// </summary>
+        public void clearBoard()
+        {
+            for (int k = 0; k < saBoard.GetLength(0); k++)
+            {
+                for (int l = 0; l < saBoard.GetLength(1); l++)
+                {
+                    saBoard[k, l] = String.Empty;
+                }
+            }
+
+            eWiningMove = WinningMove.None;
+            turnCounter = false;
+            gameOver = false;
+        }
+
+
+
         #endregion Methods
 
     }

@@ -209,7 +209,7 @@
             <Setter Property="Margin" Value="5,5,5,5"/>
             <Setter Property="MinHeight" Value="23" />
             <Setter Property="MinWidth" Value="75" />
-            
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -270,6 +270,15 @@
             </Setter>
         </Style>
         <!-- End of Style Control buttons-->
+
+        <!--Style matches lines-->
+        <Style x:Key="matchesLineStyle" TargetType="{x:Type Path}">
+            <Setter Property="Stroke" Value="Blue"/>
+            <Setter Property="StrokeThickness" Value="4"/>
+            <Setter Property="Stretch" Value="Fill"/>
+            <Setter Property="Visibility" Value="Hidden"/>
+        </Style>
+        <!--End of Style matches lines-->
     </Window.Resources>
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource mainColor}"/>
@@ -346,10 +355,7 @@
                     <RowDefinition Height="4*"/>
                     <RowDefinition Height="4*"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="btnTopLeft" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,0,5,5" Click="PlayerMoveClick" Tag="0">
-                    <Button.Foreground>
-                        <SolidColorBrush Color="{DynamicResource circleBlue}"/>
-                    </Button.Foreground>
+                <Button x:Name="btnTopLeft" Content="" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="0,0,5,5" Click="PlayerMoveClick" Tag="0">
                 </Button>
                 <Button x:Name="btnTopMid" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,0,5,5" Click="PlayerMoveClick" Tag="1">
                 </Button>
@@ -366,11 +372,73 @@
                 <Button x:Name="btnBotMid"  Grid.Row="2" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,5,0" Click="PlayerMoveClick" Tag="7">
 
                 </Button>
-                <Button x:Name="btnBotRight"  Grid.Row="2" Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,0,0" Click="PlayerMoveClick" Tag="8">
+                <Button x:Name="btnBotRight" Content="" Grid.Row="2" Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource sytleScoreBoardButtons}}" Margin="5,5,0,0" Click="PlayerMoveClick" Tag="8">
                 </Button>
-
             </Grid>
         </Grid>
+        <Grid x:Name="gMatches" Grid.Column="1" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+            </Grid.RowDefinitions>
+            <Grid x:Name="gMatchesRows" Margin="15,0,15,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Path x:Name="pRow1" Grid.Column="0" Style="{Binding Mode=OneWay, Source={StaticResource matchesLineStyle}}">
+                    <Path.Data>
+                        <LineGeometry StartPoint="0,0" EndPoint="1,0" />
+                    </Path.Data>
+                </Path>
+                <Path x:Name="pRow2" Grid.Column="0" Grid.Row="1" Style="{Binding Mode=OneWay, Source={StaticResource matchesLineStyle}}">
+                    <Path.Data>
+                        <LineGeometry StartPoint="0,0" EndPoint="1,0"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="pRow3" Grid.Column="0" Grid.Row="2" Style="{Binding Mode=OneWay, Source={StaticResource matchesLineStyle}}">
+                    <Path.Data>
+                        <LineGeometry StartPoint="0,0" EndPoint="1,0" />
+                    </Path.Data>
+                </Path>
+            </Grid>
+            <Grid x:Name="gMatchesColumns" Margin="0,15,0,15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Path x:Name="pCol1" Grid.Column="0" Style="{Binding Mode=OneWay, Source={StaticResource matchesLineStyle}}">
+                    <Path.Data>
+                        <LineGeometry StartPoint="0,0" EndPoint="0,1" />
+                    </Path.Data>
+                </Path>
+                <Path x:Name="pCol2" Grid.Column="1" Style="{Binding Mode=OneWay, Source={StaticResource matchesLineStyle}}">
+                    <Path.Data>
+                        <LineGeometry StartPoint="0,0" EndPoint="0,1" />
+                    </Path.Data>
+                </Path>
+                <Path x:Name="pCol3" Grid.Column="2" Style="{Binding Mode=OneWay, Source={StaticResource matchesLineStyle}}">
+                    <Path.Data>
+                        <LineGeometry StartPoint="0,0" EndPoint="0,1" />
+                    </Path.Data>
+                </Path>
+            </Grid>
+            <Grid x:Name="gMatchesDiagonal" Margin="15,15,15,15">
+                <Path x:Name="pDia1" Grid.Column="0" Style="{Binding Mode=OneWay, Source={StaticResource matchesLineStyle}}">
+                    <Path.Data>
+                        <LineGeometry StartPoint="0,0" EndPoint="1,1" />
+                    </Path.Data>
+                </Path>
+                <Path x:Name="pDia2" Grid.Column="0" Style="{Binding Mode=OneWay, Source={StaticResource matchesLineStyle}}">
+                    <Path.Data>
+                        <LineGeometry StartPoint="0,2" EndPoint="1,1" />
+                    </Path.Data>
+                </Path>
+            </Grid>
+        </Grid>
+
         <Grid x:Name="gContorls" Grid.Column="1" Grid.Row="4" Height="42" VerticalAlignment="Bottom">
 
             <Button x:Name="btnRestart" Grid.Column="1" Content="Restart" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="25,1,25,1" FontSize="18" Style="{Binding Mode=OneWay, Source={StaticResource styleControlsBtn}}" Click="btnRestart_Click"/>

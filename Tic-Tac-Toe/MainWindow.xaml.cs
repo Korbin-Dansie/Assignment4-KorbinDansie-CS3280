@@ -40,7 +40,8 @@ namespace Tic_Tac_Toe
         private void btnStartgame_Click(object sender, RoutedEventArgs e)
         {
             // set game state to start
-            bool hasGameStarted = true;
+            hasGameStarted = true;
+            ticTacToe.clearBoard();
 
             // reset borders
             setActivePlayerBorder();
@@ -48,6 +49,10 @@ namespace Tic_Tac_Toe
             // reset colors
 
             // reset labels
+            resetHighlightWinningMove();
+
+            // Reset the board
+            loadBoard();
         }
 
         /// <summary>
@@ -89,8 +94,12 @@ namespace Tic_Tac_Toe
         {
             ticTacToe.restartGame();
 
+            resetPlayerBorders();
+            resetHighlightWinningMove();
             resetColors();
             loadBoard();
+
+            hasGameStarted = false;  
             lbXScore.Content = "-";
             lbOScore.Content = "-";
             lbTieScore.Content = "-";
@@ -114,6 +123,20 @@ namespace Tic_Tac_Toe
             borderO.BorderBrush = brush;
         }
 
+        private void resetHighlightWinningMove()
+        {
+            pRow1.Visibility = Visibility.Hidden;
+            pRow2.Visibility = Visibility.Hidden;
+            pRow3.Visibility = Visibility.Hidden;
+
+            pCol1.Visibility = Visibility.Hidden;
+            pCol2.Visibility = Visibility.Hidden;
+            pCol3.Visibility = Visibility.Hidden;
+
+            pDia1.Visibility = Visibility.Hidden;
+            pDia2.Visibility = Visibility.Hidden;
+        }
+
         /// <summary>
         /// Reset the scoreboard labels to blank
         /// </summary>
@@ -129,6 +152,11 @@ namespace Tic_Tac_Toe
         /// <param name="e"></param>
         private void PlayerMoveClick(object sender, RoutedEventArgs e)
         {
+            if(hasGameStarted == false)
+            {
+                return;
+            }
+
             Button btn = (Button)sender;
             int index;
             try
@@ -186,10 +214,12 @@ namespace Tic_Tac_Toe
                     case true: // o's turn
                         lbOScore.Content = ticTacToe.getiPlayer2Wins();
                         break;
-
                 }
+
+                // Hightlight wining move
+                hightlightWinningMove();
+
             }
-            // Highlight winning move
 
             // Is tie
             if (ticTacToe.IsTie())
@@ -202,6 +232,64 @@ namespace Tic_Tac_Toe
             // If won or tie set game started to false
             ticTacToe.changeTurns();
             setActivePlayerBorder();
+        }
+
+        /// <summary>
+        /// Show a line connecting the winning squares
+        /// </summary>
+        private void hightlightWinningMove()
+        {
+            Color color;
+
+            // Set the winning colors to the line color 
+            if (ticTacToe.turnCounter == false)
+            {
+                // Show x is active player
+                color = (Color)this.FindResource("oneLight");
+
+            }
+            else if (ticTacToe.turnCounter == true)
+            {
+                // Show o is active player
+                color = (Color)this.FindResource("circleBlue");
+            }
+
+            switch (ticTacToe.whichSquareWon())
+            {
+                case 1:
+                    pRow1.Visibility = Visibility.Visible;
+                    pRow1.Stroke = new SolidColorBrush(color);
+                    break;
+                case 2:
+                    pRow2.Visibility = Visibility.Visible;
+                    pRow2.Stroke = new SolidColorBrush(color);
+                    break;
+                case 3:
+                    pRow3.Visibility = Visibility.Visible;
+                    pRow3.Stroke = new SolidColorBrush(color);
+                    break;
+                case 4:
+                    pCol1.Visibility = Visibility.Visible;
+                    pCol1.Stroke = new SolidColorBrush(color);
+                    break;
+                case 5:
+                    pCol2.Visibility = Visibility.Visible;
+                    pCol2.Stroke = new SolidColorBrush(color);
+                    break;
+                case 6:
+                    pCol3.Visibility = Visibility.Visible;
+                    pCol3.Stroke = new SolidColorBrush(color);
+                    break;
+                case 7:
+                    pDia1.Visibility = Visibility.Visible;
+                    pDia1.Stroke = new SolidColorBrush(color);
+                    break;
+                case 8:
+                    pDia2.Visibility = Visibility.Visible;
+                    pDia2.Stroke = new SolidColorBrush(color);
+                    break;
+
+            }
         }
 
         /// <summary>
