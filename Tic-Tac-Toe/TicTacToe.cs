@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Reflection.Metadata;
 
 namespace Tic_Tac_Toe
 {
     public class TicTacToe
     {
         #region Attributes
-        private const byte ROW_NUMBER = 3;
-        private const byte COLUMN_NUMBER = 3;
+        public const byte ROW_NUMBER = 3;
+        public const byte COLUMN_NUMBER = 3;
         public bool hasGameStarted { get; set; } = false;
         private bool gameOver = false;
 
@@ -14,6 +15,10 @@ namespace Tic_Tac_Toe
         /// Who's turn is it. False = X, True = O
         /// </summary>
         public bool turnCounter { get; set; }
+
+        public bool isAIPlayerEnabled { get; set; } = false;
+
+        private AIPlayer aiPlayer;
 
         private string[,] saBoard;
 
@@ -83,14 +88,22 @@ namespace Tic_Tac_Toe
             return gameOver;
         }
 
+        public string[,] getsaBord()
+        {
+            return saBoard;
+        }
+
         #endregion GettersAndSetter
 
         #region Constructor
+
         public TicTacToe()
         {
             saBoard = new string[ROW_NUMBER, COLUMN_NUMBER];
             turnCounter = false;
+            aiPlayer = new AIPlayer(this);
         }
+
         #endregion Constructor
 
         #region Methods
@@ -356,6 +369,20 @@ namespace Tic_Tac_Toe
             hasGameStarted = true;
         }
 
+        public void copyBoard(TicTacToe ticTacToe)
+        {
+            this.saBoard = ticTacToe.saBoard;
+        }
+
+        /// <summary>
+        /// Sets a square made by the AI player
+        /// </summary>
+        public void aiPlayerSetSquare()
+        {
+            aiPlayer.loadBoard(this);
+            int index = aiPlayer.aiPlayerSetSquare();
+            setAtSquare(index);
+        }
 
 
         #endregion Methods

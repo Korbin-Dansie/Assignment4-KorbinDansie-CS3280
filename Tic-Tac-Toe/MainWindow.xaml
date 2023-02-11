@@ -297,9 +297,9 @@
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <ComboBox x:Name="cbPlayMode" HorizontalAlignment="Left" SelectedIndex="0" Grid.Column="1" Grid.Row="1"  VerticalAlignment="Center" FontSize="18" Style="{Binding Mode=OneWay, Source={StaticResource ComboBoxFlatStyle}}" Width="99">
-            <ComboBoxItem Content="1 Player " Style="{Binding Mode=OneWay, Source={StaticResource ComboBoxItemsFlatStyle}}" />
-            <ComboBoxItem Content="2 Players" Style="{Binding Mode=OneWay, Source={StaticResource ComboBoxItemsFlatStyle}}"/>
+        <ComboBox x:Name="cbPlayMode" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1"  VerticalAlignment="Center" FontSize="18" Style="{Binding Mode=OneWay, Source={StaticResource ComboBoxFlatStyle}}" Width="99" SelectedIndex="0" DropDownClosed="cbPlayMode_Changed" Initialized="cbPlayMode_Initialized">
+            <ComboBoxItem Content="1 Player " Style="{Binding Mode=OneWay, Source={StaticResource ComboBoxItemsFlatStyle}}" Tag="0"/>
+            <ComboBoxItem Content="2 Players" Style="{Binding Mode=OneWay, Source={StaticResource ComboBoxItemsFlatStyle}}" Tag="1"/>
         </ComboBox>
         <Grid x:Name="gScoreBoard" Grid.Row="2" Grid.Column="1">
             <Grid.ColumnDefinitions>

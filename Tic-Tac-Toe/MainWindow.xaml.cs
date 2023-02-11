@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml;
 
 namespace Tic_Tac_Toe
 {
@@ -22,6 +12,7 @@ namespace Tic_Tac_Toe
     public partial class MainWindow : Window
     {
         TicTacToe ticTacToe;
+        int gameMode;
 
         public MainWindow()
         {
@@ -36,6 +27,17 @@ namespace Tic_Tac_Toe
         /// <param name="e"></param>
         private void btnStartgame_Click(object sender, RoutedEventArgs e)
         {
+            ComboBoxItem typeItem = (ComboBoxItem)cbPlayMode.SelectedItem;
+            Int32.TryParse(typeItem.Tag.ToString(), out gameMode);
+            if (gameMode == 0)
+            {
+                ticTacToe.isAIPlayerEnabled = true;
+            }
+            else
+            {
+                ticTacToe.isAIPlayerEnabled = false;
+            }
+
             // set game state to start
             ticTacToe.clearBoard();
 
@@ -70,12 +72,11 @@ namespace Tic_Tac_Toe
                 Color color = (Color)this.FindResource("oneLight");
                 Brush brush = new SolidColorBrush(color);
                 borderX.BorderBrush = brush;
-
             }
-            else if(ticTacToe.turnCounter == true)
+            else if (ticTacToe.turnCounter == true)
             {
                 // Show o is active player
-                Color color = (Color)this.FindResource("circleBlue"); 
+                Color color = (Color)this.FindResource("circleBlue");
                 Brush brush = new SolidColorBrush(color);
                 borderO.BorderBrush = brush;
             }
@@ -88,6 +89,60 @@ namespace Tic_Tac_Toe
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnRestart_Click(object sender, RoutedEventArgs e)
+        {
+            reset();
+        }
+
+        /// <summary>
+        /// On change how many players start a new game
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cbPlayMode_Changed(object sender, EventArgs e)
+        {
+            int newGameMode;
+            ComboBoxItem typeItem = (ComboBoxItem)cbPlayMode.SelectedItem;
+            if (Int32.TryParse(typeItem.Tag.ToString(), out newGameMode))
+            {
+                if (newGameMode != gameMode)
+                {
+                    gameMode = newGameMode;
+                    reset();
+                }
+
+                // If single player is selected enable AI
+                if (newGameMode == 0)
+                {
+                    ticTacToe.isAIPlayerEnabled = true;
+                }
+                else
+                {
+                    ticTacToe.isAIPlayerEnabled = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Set game mode to initulized value
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cbPlayMode_Initialized(object sender, EventArgs e)
+        {
+            int newGameMode;
+            ComboBoxItem typeItem = (ComboBoxItem)cbPlayMode.SelectedItem;
+            if (Int32.TryParse(typeItem.Tag.ToString(), out newGameMode))
+            {
+                gameMode = newGameMode;
+            }
+
+        }
+
+
+        /// <summary>
+        /// Reset the UI and TicTacToe
+        /// </summary>
+        private void reset()
         {
             ticTacToe.restartGame();
 
@@ -157,13 +212,19 @@ namespace Tic_Tac_Toe
         private void PlayerMoveClick(object sender, RoutedEventArgs e)
         {
             // If the game has not stared do noting and tell user to click start
-            if(!ticTacToe.hasGameStarted)
+            if (!ticTacToe.hasGameStarted)
             {
                 resetLabels();
                 lbClickStartToBegin.Visibility = Visibility.Visible;
                 return;
             }
 
+            // If AI is enabled and its their turn do nothing
+            bool currentPlayerTurn = ticTacToe.turnCounter;
+            if (ticTacToe.isAIPlayerEnabled && currentPlayerTurn == true)
+            {
+                return;
+            }
 
             Button btn = (Button)sender;
             int index;
@@ -180,7 +241,6 @@ namespace Tic_Tac_Toe
             String gameSquare = ticTacToe.getAtSquare(index);
 
             // Set the square and 
-            bool currentPlayerTurn = ticTacToe.turnCounter;
             bool validMove = ticTacToe.setAtSquare(index);
 
             // If games has not started do nothing
@@ -190,6 +250,7 @@ namespace Tic_Tac_Toe
             {
                 return;
             }
+
             // Else fill in the square
             else
             {
@@ -197,7 +258,7 @@ namespace Tic_Tac_Toe
 
                 btn.Content = inputString;
 
-                if (inputString.ToLower() == "x")
+                if (inputString.ToUpper() == "X")
                 {
                     Color color = (Color)this.FindResource("oneLight");
                     Brush brush = new SolidColorBrush(color);
@@ -230,9 +291,9 @@ namespace Tic_Tac_Toe
 
                 // Hightlight wining move
                 hightlightWinningMove(currentPlayerTurn);
-
             }
 
+            // If won or tie update scoareboard
             // Is tie
             if (ticTacToe.IsTie())
             {
@@ -240,10 +301,26 @@ namespace Tic_Tac_Toe
                 lbItsATie.Visibility = Visibility.Visible;
             }
 
-            // If won or tie update scoareboard
 
             // If won or tie set game started to false
             setActivePlayerBorder();
+
+            // If AI is enabled let them take their turn
+            if (ticTacToe.isAIPlayerEnabled && !ticTacToe.isgameOver())
+            {
+                ticTacToe.aiPlayerSetSquare();
+                loadBoard();
+                // Is winning move
+                if (ticTacToe.hasWon())
+                {
+
+                    lbOScore.Content = ticTacToe.getiPlayer2Wins();
+                    lbPlayer2Wins.Visibility = Visibility.Visible;
+                    // Hightlight wining move
+                    hightlightWinningMove(true);
+                }
+                setActivePlayerBorder();
+            }
         }
 
         /// <summary>
@@ -313,6 +390,26 @@ namespace Tic_Tac_Toe
             foreach (Button btn in gBoard.Children)
             {
                 btn.Content = ticTacToe.getAtSquare(index);
+                if (btn.Content.ToString() == "X")
+                {
+                    // Show x is active player
+                    Color color = (Color)this.FindResource("oneLight");
+                    Brush brush = new SolidColorBrush(color);
+                    btn.Foreground = brush;
+                }
+                else if (btn.Content.ToString() == "O")
+                {
+                    // Show o is active player
+                    Color color = (Color)this.FindResource("circleBlue");
+                    Brush brush = new SolidColorBrush(color);
+                    btn.Foreground = brush;
+                }
+                else
+                {
+                    btn.Content = "";
+                }
+
+                index++;
             }
         }
     }
