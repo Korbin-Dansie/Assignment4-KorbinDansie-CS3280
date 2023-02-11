@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Tic_Tac_Toe
 {
@@ -308,18 +309,29 @@ namespace Tic_Tac_Toe
             // If AI is enabled let them take their turn
             if (ticTacToe.isAIPlayerEnabled && !ticTacToe.isgameOver())
             {
-                ticTacToe.aiPlayerSetSquare();
-                loadBoard();
-                // Is winning move
-                if (ticTacToe.hasWon())
+                DispatcherTimer dispatcherTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0.5) };
+                dispatcherTimer.Tick += (sender, args) =>
                 {
+                    ticTacToe.aiPlayerSetSquare();
+                    loadBoard();
+                    // Is winning move
+                    if (ticTacToe.hasWon())
+                    {
 
-                    lbOScore.Content = ticTacToe.getiPlayer2Wins();
-                    lbPlayer2Wins.Visibility = Visibility.Visible;
-                    // Hightlight wining move
-                    hightlightWinningMove(true);
-                }
-                setActivePlayerBorder();
+
+                        dispatcherTimer.Start();
+
+                        lbOScore.Content = ticTacToe.getiPlayer2Wins();
+                        lbPlayer2Wins.Visibility = Visibility.Visible;
+                        // Hightlight wining move
+                        hightlightWinningMove(true);
+                    }
+                    setActivePlayerBorder();
+
+                    dispatcherTimer.Stop();
+                };
+
+                dispatcherTimer.Start();
             }
         }
 
