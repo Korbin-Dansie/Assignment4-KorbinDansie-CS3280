@@ -89,7 +89,7 @@ namespace Tic_Tac_Toe
             for (int row = 0; row < saBoard.GetLength(0); row++)
             {
                 checkLetter = saBoard[row, 0];
-                if (saBoard[row, 0] == saBoard[row, 1] && checkLetter == turnLetterValue && !(checkLetter == String.Empty || checkLetter == null))
+                if (saBoard[row, 0] == saBoard[row, 1] && checkLetter == turnLetterValue)
                 {
                     // make sure spot is not taken
                     checkEmptySpotLetter = saBoard[row, 2];
@@ -99,7 +99,7 @@ namespace Tic_Tac_Toe
                     }
                 }
                 checkLetter = saBoard[row, 1];
-                if (saBoard[row, 1] == saBoard[row, 2] && checkLetter == turnLetterValue && !(checkLetter == String.Empty || checkLetter == null))
+                if (saBoard[row, 1] == saBoard[row, 2] && checkLetter == turnLetterValue)
                 {
                     checkEmptySpotLetter = saBoard[row, 0];
                     if ((checkEmptySpotLetter == String.Empty || checkEmptySpotLetter == null))
@@ -108,7 +108,7 @@ namespace Tic_Tac_Toe
                     }
                 }
                 checkLetter = saBoard[row, 0];
-                if (saBoard[row, 0] == saBoard[row, 2] && checkLetter == turnLetterValue && !(checkLetter == String.Empty || checkLetter == null))
+                if (saBoard[row, 0] == saBoard[row, 2] && checkLetter == turnLetterValue)
                 {
                     checkEmptySpotLetter = saBoard[row, 1];
                     if ((checkEmptySpotLetter == String.Empty || checkEmptySpotLetter == null))

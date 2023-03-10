@@ -6,9 +6,24 @@ namespace Tic_Tac_Toe
     public class TicTacToe
     {
         #region Attributes
-        public const byte ROW_NUMBER = 3;
-        public const byte COLUMN_NUMBER = 3;
+        /// <summary>
+        /// Number of row is the game board
+        /// </summary>
+        private const byte ROW_NUMBER = 3;
+
+        /// <summary>
+        /// Number of columns in the game board
+        /// </summary>
+        private const byte COLUMN_NUMBER = 3;
+
+        /// <summary>
+        /// Sees if game has started
+        /// </summary>
         public bool hasGameStarted { get; set; } = false;
+
+        /// <summary>
+        /// Sees if game is over
+        /// </summary>
         private bool gameOver = false;
 
         /// <summary>
@@ -16,22 +31,44 @@ namespace Tic_Tac_Toe
         /// </summary>
         public bool turnCounter { get; set; }
 
+        /// <summary>
+        /// Sees if Ai player is active
+        /// </summary>
         public bool isAIPlayerEnabled { get; set; } = false;
 
+        /// <summary>
+        /// The Ai player
+        /// </summary>
         private AIPlayer aiPlayer;
 
+        /// <summary>
+        /// The game board
+        /// </summary>
         private string[,] saBoard;
 
-        private int saBoardIndex
-        {
-            get { return saBoard.Length; }
-        }
-
+        /// <summary>
+        /// Number of wins for X
+        /// </summary>
         private int iPlayer1Wins;
+
+        /// <summary>
+        /// Number of wins for O
+        /// </summary>
         private int iPlayer2Wins;
+
+        /// <summary>
+        /// Number of ties
+        /// </summary>
         private int iTies;
 
+        /// <summary>
+        /// Variable to store how the game was won
+        /// </summary>
         private WinningMove eWiningMove;
+
+        /// <summary>
+        /// The different ways to win
+        /// </summary>
         private enum WinningMove
         {
             None,
@@ -48,16 +85,28 @@ namespace Tic_Tac_Toe
         #endregion Attributes
 
         #region GettersAndSetter
+        /// <summary>
+        /// Get X's score
+        /// </summary>
+        /// <returns></returns>
         public int getiPlayer1Wins()
         {
             return iPlayer1Wins;
         }
 
+        /// <summary>
+        /// Get O's score
+        /// </summary>
+        /// <returns></returns>
         public int getiPlayer2Wins()
         {
             return iPlayer2Wins;
         }
 
+        /// <summary>
+        /// Get number of ties
+        /// </summary>
+        /// <returns></returns>
         public int getiTies()
         {
             return iTies;
@@ -88,6 +137,10 @@ namespace Tic_Tac_Toe
             return gameOver;
         }
 
+        /// <summary>
+        /// Return the gameboard
+        /// </summary>
+        /// <returns></returns>
         public string[,] getsaBord()
         {
             return saBoard;
@@ -97,6 +150,9 @@ namespace Tic_Tac_Toe
 
         #region Constructor
 
+        /// <summary>
+        /// Construct the game
+        /// </summary>
         public TicTacToe()
         {
             saBoard = new string[ROW_NUMBER, COLUMN_NUMBER];
@@ -114,10 +170,14 @@ namespace Tic_Tac_Toe
         /// <returns></returns>
         public bool hasWon()
         {
-            String winingCharacter;
+            // Which character won
+            string winingCharacter;
+
+            // did somebody win
             bool won =  horizontalWin(out winingCharacter) || verticalWin(out winingCharacter) || diagonalWin(out winingCharacter);
             if (won && !gameOver)
             {
+                // Set game over and update score
                 gameOver = true;
                 if(winingCharacter == "X")
                 {
@@ -136,15 +196,17 @@ namespace Tic_Tac_Toe
         /// <summary>
         /// Checks if the game has been one with a row
         /// </summary>
+        /// <param name="winingCharacter">Which character won</param>
         /// <returns></returns>
-        private bool horizontalWin(out String winingCharacter)
+        private bool horizontalWin(out string winingCharacter)
         {
             string startingChar;
             string nextChar;
             for (int row = 0; row < ROW_NUMBER; row++)
             {
                 startingChar = saBoard[row, 0];
-                // If every column in the row is the same return true
+
+                // If every character in the row is the same return true
                 for (int col = 1; col < COLUMN_NUMBER; col++)
                 {
                     nextChar = saBoard[row, col];
@@ -154,7 +216,7 @@ namespace Tic_Tac_Toe
                     }
 
                     // If we reached the end of the row and all strings are the same then somebody won
-                    if(col + 1 == COLUMN_NUMBER && !(startingChar == null || startingChar == String.Empty))
+                    if(col + 1 == COLUMN_NUMBER && !(startingChar == null || startingChar == string.Empty))
                     {
                         eWiningMove = (WinningMove)row + 1;
                         winingCharacter = saBoard[row, 0];
@@ -162,22 +224,23 @@ namespace Tic_Tac_Toe
                     }
                 }
             }
-            winingCharacter = String.Empty;
+            winingCharacter = string.Empty;
             return false;
         }
 
         /// <summary>
         /// Checks if the game has been won with a column
         /// </summary>
+        /// <param name="winingCharacter">Which character won</param>
         /// <returns></returns>
-        private bool verticalWin(out String winingCharacter)
+        private bool verticalWin(out string winingCharacter)
         {
             string startingChar;
             string nextChar;
             for (int col = 0; col < COLUMN_NUMBER; col++)
             {
                 startingChar = saBoard[0, col];
-                // If every column in the row is the same return true
+                // If every character in the column is the same return true
                 for (int row = 1; row < ROW_NUMBER; row++)
                 {
                     nextChar = saBoard[row, col];
@@ -186,8 +249,8 @@ namespace Tic_Tac_Toe
                         break;
                     }
 
-                    // If we reached the end of the row and all strings are the same then somebody won
-                    if (row + 1 == ROW_NUMBER && !(startingChar == null || startingChar == String.Empty))
+                    // If we reached the end of the column and all strings are the same then somebody won
+                    if (row + 1 == ROW_NUMBER && !(startingChar == null || startingChar == string.Empty))
                     {
                         eWiningMove = (WinningMove)col + 4;
                         winingCharacter = saBoard[0, col];
@@ -195,31 +258,33 @@ namespace Tic_Tac_Toe
                     }
                 }
             }
-            winingCharacter = String.Empty;
+            winingCharacter = string.Empty;
             return false;
         }
 
         /// <summary>
         /// Checks if the game has been won with a diagonal
         /// </summary>
+        /// <param name="winingCharacter">Which character won</param>
         /// <returns></returns>
-        private bool diagonalWin(out String winingCharacter)
+        private bool diagonalWin(out string winingCharacter)
         {
-
-            if (saBoard[0,0] == saBoard[1, 1] && saBoard[1, 1] == saBoard[2, 2] && !(saBoard[1, 1] == null || saBoard[1, 1] == String.Empty))
+            // First diagonal \
+            if (saBoard[0,0] == saBoard[1, 1] && saBoard[1, 1] == saBoard[2, 2] && !(saBoard[1, 1] == null || saBoard[1, 1] == string.Empty))
             {
                 winingCharacter = saBoard[1, 1];
                 eWiningMove = WinningMove.Diag1;
                 return true;
             }
-            else if (saBoard[2, 0] == saBoard[1, 1] && saBoard[1, 1] == saBoard[0, 2] && !(saBoard[1, 1] == null || saBoard[1, 1] == String.Empty))
+            // Second diagonal /
+            else if (saBoard[2, 0] == saBoard[1, 1] && saBoard[1, 1] == saBoard[0, 2] && !(saBoard[1, 1] == null || saBoard[1, 1] == string.Empty))
             {
                 winingCharacter = saBoard[1, 1];
                 eWiningMove = WinningMove.Diag2;
                 return true;
             }
 
-            winingCharacter = String.Empty;
+            winingCharacter = string.Empty;
             return false;
         }
 
@@ -239,13 +304,14 @@ namespace Tic_Tac_Toe
             {
                 for (int col = 0; col < COLUMN_NUMBER; col++)
                 {
-                    if(saBoard[row,col] == null || saBoard[row, col] == String.Empty)
+                    if(saBoard[row,col] == null || saBoard[row, col] == string.Empty)
                     {
                         return false;
                     }
                 }
             }
 
+            // Update the game status
             eWiningMove = WinningMove.None;
             gameOver = true;
             iTies++;
@@ -256,6 +322,7 @@ namespace Tic_Tac_Toe
         /// <summary>
         /// Returns the string at a given index
         /// </summary>
+        /// <param name="index">Based on 1d array</param>
         /// <returns></returns>
         public string getAtSquare(int index)
         {
@@ -268,8 +335,8 @@ namespace Tic_Tac_Toe
         /// <summary>
         /// Set X or O to a game board square if valid
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns>If move is value True</returns>
+        /// <param name="index">Based on 1d array</param>
+        /// <returns>If move is valid return true</returns>
         public bool setAtSquare(int index)
         {
             // Make sure the game is not over, or game has not started
@@ -293,6 +360,8 @@ namespace Tic_Tac_Toe
             {
                 setsaBoardbyIndex(index, "O");
             }
+
+            // Change hows turn it is
             changeTurns();
             return true;
         }
@@ -337,10 +406,11 @@ namespace Tic_Tac_Toe
             {
                 for (int l = 0; l < saBoard.GetLength(1); l++)
                 {
-                    saBoard[k, l] = String.Empty;
+                    saBoard[k, l] = string.Empty;
                 }
             }
 
+            // Reset all the score values
             eWiningMove = WinningMove.None;
             iPlayer1Wins = 0;
             iPlayer2Wins = 0;
@@ -363,6 +433,8 @@ namespace Tic_Tac_Toe
                 }
             }
 
+
+            // Reset the board but keep the score
             eWiningMove = WinningMove.None;
             turnCounter = false;
             gameOver = false;
@@ -371,7 +443,7 @@ namespace Tic_Tac_Toe
 
         public void copyBoard(TicTacToe ticTacToe)
         {
-            this.saBoard = ticTacToe.saBoard;
+            saBoard = ticTacToe.saBoard;
         }
 
         /// <summary>

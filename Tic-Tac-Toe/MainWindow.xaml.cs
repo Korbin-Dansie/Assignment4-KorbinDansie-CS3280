@@ -12,7 +12,14 @@ namespace Tic_Tac_Toe
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// The tic tac toe game
+        /// </summary>
         TicTacToe ticTacToe;
+
+        /// <summary>
+        /// Used to see if single or multiplayer is selected
+        /// </summary>
         int gameMode;
 
         public MainWindow()
@@ -28,6 +35,7 @@ namespace Tic_Tac_Toe
         /// <param name="e"></param>
         private void btnStartgame_Click(object sender, RoutedEventArgs e)
         {
+            // Check to see if single player is enabled
             ComboBoxItem typeItem = (ComboBoxItem)cbPlayMode.SelectedItem;
             Int32.TryParse(typeItem.Tag.ToString(), out gameMode);
             if (gameMode == 0)
@@ -45,10 +53,10 @@ namespace Tic_Tac_Toe
             // reset borders
             setActivePlayerBorder();
 
-            // reset colors
-
             // reset labels
             resetLabels();
+
+            // Hide the stroke acoss the winning move
             resetHighlightWinningMove();
 
             // Reset the board
@@ -61,12 +69,16 @@ namespace Tic_Tac_Toe
         /// </summary>
         private void setActivePlayerBorder()
         {
+            // Reset border before starting
             resetPlayerBorders();
+
+            // if game over highlight nothing
             if (ticTacToe.isgameOver())
             {
                 return;
             }
 
+            // If X's turn
             if (ticTacToe.turnCounter == false)
             {
                 // Show x is active player
@@ -74,6 +86,7 @@ namespace Tic_Tac_Toe
                 Brush brush = new SolidColorBrush(color);
                 borderX.BorderBrush = brush;
             }
+            // If O's turn
             else if (ticTacToe.turnCounter == true)
             {
                 // Show o is active player
@@ -101,7 +114,10 @@ namespace Tic_Tac_Toe
         /// <param name="e"></param>
         private void cbPlayMode_Changed(object sender, EventArgs e)
         {
+            // Used to see if user changed game modes
             int newGameMode;
+
+            // If they did change game modes reset the game
             ComboBoxItem typeItem = (ComboBoxItem)cbPlayMode.SelectedItem;
             if (Int32.TryParse(typeItem.Tag.ToString(), out newGameMode))
             {
@@ -109,16 +125,6 @@ namespace Tic_Tac_Toe
                 {
                     gameMode = newGameMode;
                     reset();
-                }
-
-                // If single player is selected enable AI
-                if (newGameMode == 0)
-                {
-                    ticTacToe.isAIPlayerEnabled = true;
-                }
-                else
-                {
-                    ticTacToe.isAIPlayerEnabled = false;
                 }
             }
         }
@@ -150,7 +156,6 @@ namespace Tic_Tac_Toe
             resetPlayerBorders();
             resetLabels();
             resetHighlightWinningMove();
-            resetColors();
             loadBoard();
 
             lbClickStartToBegin.Visibility = Visibility.Visible;
@@ -158,14 +163,6 @@ namespace Tic_Tac_Toe
             lbXScore.Content = "-";
             lbOScore.Content = "-";
             lbTieScore.Content = "-";
-        }
-
-        /// <summary>
-        /// If any background colors have changed reset them
-        /// </summary>
-        private void resetColors()
-        {
-
         }
 
         /// <summary>
@@ -178,6 +175,9 @@ namespace Tic_Tac_Toe
             borderO.BorderBrush = brush;
         }
 
+        /// <summary>
+        /// Hide all strokes highlighting the winning move
+        /// </summary>
         private void resetHighlightWinningMove()
         {
             pRow1.Visibility = Visibility.Hidden;
@@ -193,7 +193,7 @@ namespace Tic_Tac_Toe
         }
 
         /// <summary>
-        /// Reset the scoreboard labels to blank
+        /// Hide the who Won lables, and press to start
         /// </summary>
         private void resetLabels()
         {
@@ -221,12 +221,15 @@ namespace Tic_Tac_Toe
             }
 
             // If AI is enabled and its their turn do nothing
-            bool currentPlayerTurn = ticTacToe.turnCounter;
+            // Becaues the game updates its turn as soon as a new square is set I need to store the current turn to do some ui change later
+            bool currentPlayerTurn = ticTacToe.turnCounter; 
+
             if (ticTacToe.isAIPlayerEnabled && currentPlayerTurn == true)
             {
                 return;
             }
 
+            // Get the tag variable from the button which is a 1d array value
             Button btn = (Button)sender;
             int index;
             try
@@ -239,12 +242,8 @@ namespace Tic_Tac_Toe
                 return;
             }
 
-            String gameSquare = ticTacToe.getAtSquare(index);
-
-            // Set the square and 
+            // Try to set the square 
             bool validMove = ticTacToe.setAtSquare(index);
-
-            // If games has not started do nothing
 
             // If space is already filled with an x or o do nothing
             if (validMove == false)
@@ -252,7 +251,7 @@ namespace Tic_Tac_Toe
                 return;
             }
 
-            // Else fill in the square
+            // Else fill in the square - Only update the clicked square
             else
             {
                 string inputString = ticTacToe.getAtSquare(index);
@@ -274,7 +273,7 @@ namespace Tic_Tac_Toe
 
             }
 
-            // Is winning move
+            // Is winning move - if so display who won
             if (ticTacToe.hasWon())
             {
                 switch (currentPlayerTurn)
@@ -303,33 +302,36 @@ namespace Tic_Tac_Toe
             }
 
 
-            // If won or tie set game started to false
+            // Update the borders showing whos turn it is
             setActivePlayerBorder();
 
             // If AI is enabled let them take their turn
             if (ticTacToe.isAIPlayerEnabled && !ticTacToe.isgameOver())
             {
-                DispatcherTimer dispatcherTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0.5) };
+                // Set a timer so the Ai takes a little bit of time to take their turn. So the humans dont feel so bad about taking so long.
+                DispatcherTimer dispatcherTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0.4) };
                 dispatcherTimer.Tick += (sender, args) =>
-                {
+                {   
+                    // Ai takes their turn
                     ticTacToe.aiPlayerSetSquare();
+
+                    // Since we dont know the name of the button they press relaod the whole board
                     loadBoard();
-                    // Is winning move
+
+                    // If the ai won update the ui
                     if (ticTacToe.hasWon())
                     {
-
-
-                        dispatcherTimer.Start();
-
                         lbOScore.Content = ticTacToe.getiPlayer2Wins();
                         lbPlayer2Wins.Visibility = Visibility.Visible;
                         // Hightlight wining move
                         hightlightWinningMove(true);
                     }
+
+                    // Switch the border back to the human
                     setActivePlayerBorder();
 
                     dispatcherTimer.Stop();
-                };
+                }; // End of updated the ui based on the ai move
 
                 dispatcherTimer.Start();
             }
@@ -337,25 +339,27 @@ namespace Tic_Tac_Toe
 
         /// <summary>
         /// Show a line connecting the winning squares
-        /// <para>Takes whos turn it is</para>
+        /// <para>Whos turn is it.</para>
         /// </summary>
         private void hightlightWinningMove(bool currentPlayerTurn)
         {
+
             Color color;
 
             // Set the winning colors to the line color 
             if (!currentPlayerTurn)
             {
-                // Show x is active player
+                // X's winning color
                 color = (Color)this.FindResource("oneLight");
 
             }
             else
             {
-                // Show o is active player
+                // O's winning color
                 color = (Color)this.FindResource("circleBlue");
             }
 
+            // Set the winning storke to visiable and color based on whos turn it 
             switch (ticTacToe.whichSquareWon())
             {
                 case 1:
